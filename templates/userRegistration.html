@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <link rel="stylesheet" href= "{{ url_for('static',filename='userRegistration.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>User Registration</h1>
+        <div id="registration-message"></div>
+        <form id="registration-form">
+            <label for="user-type">User Type:</label>
+            <select name="user-type" id="user-type">
+                <option value="manager">Manager</option>
+                <option value="student">Student</option>
+            </select>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" name="confirm-password" id="confirm-password" required>
+            <button type="button" id="create-account-btn">Create Account</button>
+        </form>
+        <a href="/" class="link-button">Go Back to Login</a>
+    </div>
+
+    <script>
+        document.getElementById('create-account-btn').addEventListener('click', function() {
+            var form = document.getElementById('registration-form');
+            var formData = new FormData(form);
+            
+            fetch('http://127.0.0.1:5000/register', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success === true) {
+                    document.getElementById('registration-message').innerText = data.message;
+                    document.getElementById('registration-message').style.backgroundColor = 'green';
+                    setTimeout(function() {
+                        window.location.href = '/';
+                    }, 2000); // Wait for 2 seconds
+                } else {
+                    document.getElementById('registration-message').innerText = data.message;
+                    document.getElementById('registration-message').style.backgroundColor = 'red';
+                    // alert('Registration failed. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Registration failed. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>
+

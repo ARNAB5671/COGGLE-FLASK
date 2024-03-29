@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mess Automation System</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='home.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box student-login">
+            <h2>Student Login</h2>
+            <button onclick="openStudentLoginPage()">Student Login</button>
+        </div>
+        <div class="login-box manager-login">
+            <h2>Manager Login</h2>
+            <button onclick="openManagerLoginPage()">Manager Login</button>
+        </div>
+        <div class="login-box">
+            <h2>Register</h2>
+            <button onclick="openRegistrationPage()">Register Here</button>
+        </div>
+    </div>
+    <script>
+        function openStudentLoginPage() {
+            window.location.href = '/studentLogin';
+        }
+
+        function openManagerLoginPage() {
+            window.location.href = '/managerLogin';
+        }
+
+        function openRegistrationPage() {
+            window.location.href = '/userRegistration';
+        }
+    </script>
+</body>
+</html>
