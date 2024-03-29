@@ -1,6 +1,22 @@
 from flask import Flask, render_template, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'  # SQLite database
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+## ~~~~~~~~~~~~~~~~~~~~ Tables ~~~~~~~~~~~~~~~~~~~~
+# Reflect the existing database tables
+db.reflect()
+# Access the users table
+Users = db.Model.metadata.tables['users']
+
+## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 
 @app.route("/")
 def home():
@@ -32,7 +48,7 @@ manager = {
 def register():
     print("\n\n\n\nINSIDE USER REGISTRATION\n\n\n\n")
     # Get the data from the request
-    user_type = request.form.get('user-type')
+    role = request.form.get('user-type')
     email = request.form.get('email')
     password = request.form.get('password')
     confirm_password = request.form.get('confirm-password')
@@ -40,22 +56,15 @@ def register():
     # Check if passwords match
     if password != confirm_password:
         return jsonify({'sCode': 400, 'success': False, 'message': 'Passwords do not match'}), 400
+    
+    if Users.query.filter_by(email=email).first() and Users.query.filter_by(role=role).first():
+        return jsonify({'message': f'{role} already exists'}), 400
+    
+    new_user = Users(email=email, role=role, password=generate_password_hash(password))
+    db.session.add(new_user)
+    db.session.commit()
 
-    if user_type == 'manager':
-        if email in manager:
-            return jsonify({'sCode': 400, 'success': False, 'message': 'Manager already exists'}), 400
-        else:
-            manager[email] = password
-            return jsonify({'sCode': 200, 'success': True, 'message': 'Manager registered successfully'}), 200
-    elif user_type == 'student':
-        if email in student:
-            return jsonify({'sCode': 400, 'success': False, 'message': 'Student already exists'}), 400
-        else:
-            student[email] = password
-            return jsonify({'sCode': 200, 'success': True, 'message': 'Student registered successfully'}), 200
-
-    # Return success response
-    return jsonify({'sCode': 400, 'success': False, 'message': 'Something Went Wrong, Contact Admin'}), 200
+    return jsonify({'message': 'User added successfully'}), 201
 
 
 @app.route('/authenticateStudent', methods=['POST'])
