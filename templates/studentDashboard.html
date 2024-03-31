@@ -4,9 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href= "{{ url_for('static',filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='studentDashboardStyles.css') }}">
 </head>
 <body>
-    <h1>student logged in</h1>
+    <h1>Student Dashboard</h1>
+    <div class="parent-box">
+        <div class="base-meal-box">
+            <h3>Base Meal</h3>
+            <div class="base-meals" id="base-meals"></div>
+            <div class="base-meal-amount" id="base-meal-amount">Base: Rs 150/-</div>
+        </div>
+        <div class="extras-box">
+            <h3>Extras</h3>
+            <div class="extra-meals">
+                <ol class="extra-meal-list" id="extra-meal-list">
+                    <!-- <li data-price="100">Chicken (<span class="price">Rs 100/-</span>) <button class="select-btn">Select</button></li>
+                    <li data-price="150">Mutton (<span class="price">Rs 150/-</span>) <button class="select-btn">Select</button></li>
+                    <li data-price="50">Sweet (<span class="price">Rs 50/-</span>) <button class="select-btn">Select</button></li> -->
+                </ol>
+            </div>
+            <div class="extra-meal-amount">Extras: Rs <span id="total-amount">0</span>/-</div>
+        </div>
+    </div>
+    <div class="final-amount"> Total Amount: <span id="final-amount"></div>
+    <button id="sendRequestBtn">Confirm Meal</button>
+    <script src="{{ url_for('static', filename='studentDashboardScript.js') }}"></script>
 </body>
 </html>

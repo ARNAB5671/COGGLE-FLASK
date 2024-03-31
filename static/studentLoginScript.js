@@ -21,8 +21,9 @@ function authenticateUser(username, password) {
         },
         body: JSON.stringify({ username: username, password: password })
     })
-    .then(response => {
-        if (response.ok) {
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
             // If authentication successful, display success message
             document.getElementById('login-message').innerText = 'Logged in successfully!';
             document.getElementById('login-message').style.backgroundColor = 'green';

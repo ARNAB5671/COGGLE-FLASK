@@ -1,3 +1,12 @@
+## Create a Virtual Environment
+
+1. python3 -m venv venv
+2. Activate the virtual environment
+source venv/bin/activate
+3. Install the packages
+pip install -r requirements.txt
+
+
 ## Creating tables in Database
 
 1. Open your terminal or command prompt and navigate to the directory where you want to create the SQLite database file.

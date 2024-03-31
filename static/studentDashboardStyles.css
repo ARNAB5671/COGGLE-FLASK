@@ -1,0 +1,125 @@
+/* Reset default browser styles */
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 24px;
+}
+
+.parent-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    position: relative; /* Add position relative to parent */
+}
+
+.base-meal-box, .extras-box {
+    border: 1px solid #ccc;
+    height: 250px;
+    width: 300px;
+    padding: 40px;
+    margin: 0 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    position: relative; /* Add position relative to parent */
+}
+
+.base-meal-amount, .extra-meal-amount {
+    margin-top: 10px;
+    position: absolute; /* Position absolute */
+    bottom: 0; /* Position at the bottom */
+    text-align: right;
+    padding: 5px;
+    border: black solid 2px;
+    margin-bottom: 5px;
+}
+
+.base-meals, .extra-meal-list {
+    margin-top: 10px;
+}
+
+.extra-meal-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.extra-meal-list li {
+    margin-bottom: 5px;
+}
+
+/* Additional styles for selected items */
+.extra-meal-list .selected {
+    background-color: #e0e0e0;
+}
+
+.extra-meal-list .select-btn {
+    margin-left: 10px;
+}
+
+.extra-meal-list .deselect-btn {
+    display: none;
+}
+
+.extra-meal-list .selected .select-btn {
+    display: none;
+}
+
+.extra-meal-list .selected .deselect-btn {
+    display: inline-block;
+}
+
+
+.total-box {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.total-box h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.total-amount {
+    font-size: 18px;
+}
+
+.final-amount {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+    font-size: 20px;
+    text-align: center;
+}
+
+#sendRequestBtn {
+    display: block;
+    margin-top: 80px;;
+    margin: 0 auto; /* Center the button horizontally */
+    padding: 10px 20px; /* Add padding for better appearance */
+    font-size: 16px;
+    background-color: #007bff; /* Blue background color */
+    color: #fff; /* White text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+#sendRequestBtn:hover {
+    background-color: #0056b3; /* Darker blue color on hover */
+}
