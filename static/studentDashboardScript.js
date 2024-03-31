@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    let updatedBaseMealAmount;
     let selectButtons = document.querySelectorAll('.select-btn');
     const totalAmountElement = document.getElementById('total-amount');
     const baseMealElement = document.querySelector('.base-meals');
@@ -24,7 +25,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Handle the data received from the API
         document.getElementById('base-meals').textContent = data.mealOptions.baseMeal;
         document.getElementById('base-meal-amount').textContent = 'Base: Rs ' + data.mealOptions.baseMealPrice + '/-';
-        
+    
+        // Update baseMealAmount
+        updatedBaseMealAmount = parseFloat(data.mealOptions.baseMealPrice);
+        baseMealAmountElement.textContent = 'Base: Rs ' + updatedBaseMealAmount + '/-';
+    
+        // Update finalAmountElement
+        finalAmountElement.textContent = updatedBaseMealAmount + totalAmount;
+    
         const extrasList = data.mealOptions.extrasList;
         const extrasListElement = document.getElementById('extra-meal-list');
         extrasList.forEach(item => {
@@ -37,12 +45,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 extrasListElement.appendChild(listItem);
             }
         });
-
+    
         selectButtons = document.querySelectorAll('.select-btn');
-
+    
         console.log(selectButtons);
 
-    })
+    })    
     .catch(error => {
         console.error('Error:', error);
         // Handle any errors that occurred during the fetch
@@ -58,9 +66,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const requestBody = {
             'baseMeal': baseMeal,
-            'baseMealAmount': baseMealAmount,
+            'baseMealAmount': updatedBaseMealAmount,
             'extraMealPrice': totalAmount,
-            'totalAmount': baseMealAmount + totalAmount,
+            'totalAmount': updatedBaseMealAmount + totalAmount,
             'date': date
         };
         fetch('http://127.0.0.1:5000/studentSelectMeals', {
@@ -120,12 +128,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     button.textContent = 'Select';
                     listItem.querySelector('.deselect-btn').remove();
                     totalAmountElement.textContent = totalAmount;
-                    finalAmountElement.textContent = baseMealAmount + totalAmount;
+                    finalAmountElement.textContent = updatedBaseMealAmount + totalAmount;
                 });
                 listItem.appendChild(deselectButton);
             }
             totalAmountElement.textContent = totalAmount;
-            finalAmountElement.textContent = baseMealAmount + totalAmount;
+            finalAmountElement.textContent = updatedBaseMealAmount + totalAmount;
         }
     });
 });
