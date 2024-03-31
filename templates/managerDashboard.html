@@ -3,10 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href= "{{ url_for('static',filename='styles.css') }}">
+    <title>Manager Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='ManagerDashboardStyles.css') }}">
 </head>
 <body>
-    <h1>manager logged in</h1>
+    <h1>Manager Dashboard</h1>
+    <h3>Today's Meal</h3>
+    <form id="manager-form">
+        <label for="base-meals">Base Meals:</label>
+        <input type="text" id="base-meals" name="base-meals" required>
+
+        <label for="base-meal-price">Price of Base Meals (Rs):</label>
+        <input type="number" id="base-meal-price" name="base-meal-price" required>
+
+        <div id="extras-container">
+            <label for="extras">Extras:</label>
+            <div class="extra-item">
+                <input type="text" class="extra" name="extras[]" required>
+                <input type="number" class="price" name="prices[]" required>
+                <button type="button" id="add-extra-btn">Add</button>
+            </div>
+        </div>
+
+        <button type="submit" id="submit-btn">Submit</button>
+    </form>
+    <script src="{{ url_for('static', filename='managerDashboardScript.js') }}"></script>
 </body>
 </html>

@@ -211,5 +211,11 @@ def managerDashboard():
         return redirect(url_for('unauthorizedPage'))
     return render_template("managerDashboard.html")
 
+@app.route('/setMeal', methods=['POST'])
+@login_required
+def setMeal():
+    #TODO: Add the values to a table - for the students to fetch
+    return jsonify({'sCode': 200, 'success':True})
+
 if __name__ == "__main__":
     app.run(debug=True)
