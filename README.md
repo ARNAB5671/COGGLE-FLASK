@@ -35,7 +35,7 @@ SQL database has been used `sqlite3`
 
 4. Exit - `exit()`
 
-5. Now run the command `flask run` or `python app.py`
+5. Now run the command `python app.py`
 
 Open the url `http://127.0.0.1:8000/` and enjoy.
 
@@ -47,5 +47,47 @@ Get the ip address of the computer(mac) using `ipconfig getifaddr en0` and open 
 
 # Using the App
 
-### Logging Out
-type the url`http://127.0.0.1:8000/logout` to logout.
+Using the app includes Registering as `Manager` and `Student`. Manager can use the Dashboard to set the meals for a prticular day. Student can Choose the extras from the set meals for that particular day. 
+
+## Home Page
+
+`127.0.0.1:8000/`
+
+![screenshot](/resources/home.png?raw=true "Home Page")
+<!-- <img src="/resources/home.png" alt="screenshot" width="400" height="300"/> -->
+
+## User Registration
+
+`http://127.0.0.1:8000/userRegistration`
+
+Once Registered, it wil automatically go to the home screen within 2 seconds.
+
+<!-- ![screenshot](/resources/userRegistration.png?raw=false "User Registration") -->
+
+## Manager and Student Login
+
+Manager Login - `http://127.0.0.1:8000/managerLogin`
+Student Login - `http://127.0.0.1:8000/studentLogin`
+
+Once logged in, it wil automatically go to the dashboard screen within 2 seconds.
+
+![screenshot](/resources/managerLogin.png?raw=false "Manager Page")
+![screenshot](/resources/studentLogin.png?raw=true "Student Page")
+
+## Manager Dashboard
+
+`http://127.0.0.1:8000/managerDashboard`
+
+![screenshot](/resources/managerDashboard.png?raw=true "Manager Dashboard")
+
+## Student Dashboard
+
+`http://127.0.0.1:8000/studentDashboard`
+
+![screenshot](/resources/srudentDashboard.png?raw=true "Student Dashboard")
+
+## Logging Out
+
+type the url `http://127.0.0.1:8000/logout` to logout.
+
+Once logged out, it wil automatically go to the home screen within 2 seconds.
