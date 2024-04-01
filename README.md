@@ -26,3 +26,6 @@ Open the url `http://127.0.0.1:5000/` and enjoy.
 
 
 -- You can open the database.db file inside `instance/` using a good vscode extension. Like SQLite Viewer. To open the database.db with this, right click and select `Open With..`
+
+### Logging Out
+type the url`http://127.0.0.1:5000/logout` to logout.
