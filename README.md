@@ -1,10 +1,10 @@
 ## Create a Virtual Environment
 
-1. python3 -m venv venv
+1. `python3 -m venv venv`
 2. Activate the virtual environment
-source venv/bin/activate
+`source venv/bin/activate`
 3. Install the packages
-pip install -r requirements.txt
+`pip install -r requirements.txt`
 
 
 ## Creating tables in Database
