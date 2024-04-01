@@ -332,5 +332,27 @@ def setMeal():
 
     return jsonify({'sCode': 200, 'success':True}), 200
 
+
+@app.route('/managerMealsTable')
+@login_required
+def managerMealsTable():
+    if current_user.role!='manager':
+        return redirect(url_for('unauthorizedPage'))
+    return render_template("managerMealsTablePage.html")
+
+@app.route('/managerMealsData')
+def managerMealsData():
+    meals = Meals.query.all()
+    meals_data = []
+    for meal in meals:
+        meals_data.append({
+            'date': meal.date.strftime('%Y-%m-%d'),
+            'base_meal': meal.base_meal,
+            'base_meal_price': meal.base_meal_price,
+            'extras': meal.extras,
+            'extras_prices': meal.extras_prices
+        })
+    return jsonify(meals_data)
+
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=8000)
