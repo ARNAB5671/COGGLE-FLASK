@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
+from datetime import datetime
 
 import json
 
@@ -30,6 +31,30 @@ class Users(db.Model, UserMixin):
     email = db.Column(db.String(120), nullable=False, unique=True)
     password_hash = db.Column(db.String(128), nullable=False)
     role = db.Column(db.String(50), nullable=False)
+
+
+class Meals(db.Model):
+    __tablename__ = 'meals'
+
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, unique=True, nullable=False)  # Make date field unique
+    base_meal = db.Column(db.String(255))
+    base_meal_price = db.Column(db.Float)
+    extras = db.Column(db.String)  # Storing JSON strings for extras
+    extras_prices = db.Column(db.String)  # Storing JSON strings for extras prices
+
+    def __init__(self, date, base_meal, base_meal_price, extras, extras_prices):
+        self.date = date
+        self.base_meal = base_meal
+        self.base_meal_price = base_meal_price
+        self.extras = json.dumps(extras)
+        self.extras_prices = json.dumps(extras_prices)
+
+    def get_extras(self):
+        return json.loads(self.extras)
+
+    def get_extras_prices(self):
+        return json.loads(self.extras_prices)
 
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -172,17 +197,34 @@ def studentDashboard():
         return redirect(url_for('unauthorizedPage'))
     return render_template("studentDashboard.html")
 
-@app.route('/todaysMealOptions', methods=['GET'])
+@app.route('/todaysMealOptions', methods=['POST'])
 @login_required
 def todaysMealOptions():
+    print("HERE")
+    request_data = request.get_json()
+    today = request_data.get('date')
+
+    # Convert date string to datetime object
+    today = datetime.strptime(today, '%Y-%m-%d').date()
+    meal = Meals.query.filter_by(date=today).first()
+    if not meal:
+        return jsonify({
+            'sCode': 404,
+            'success': False,
+            'message': 'meals not available'
+        })
+    extrasList = list()
+    for extra, price in zip(meal.get_extras(), meal.get_extras_prices()):
+        extrasList.append({extra: price})
+    print("HERE")
     return jsonify({
         'sCode': 200,
         'success': True,
         'message': 'here is the info of the meals',
         'mealOptions': {
-            'baseMeal': 'Riceeeeee, dal, paneer, raita, salad',
-            'baseMealPrice': '15000',
-            'extrasList': [{'Chickennnnnn': '100'}, {'Mutton': '150'}, {'Sweet': '50'}]
+            'baseMeal': meal.base_meal,
+            'baseMealPrice': meal.base_meal_price,
+            'extrasList': extrasList
         }
     })
 
@@ -214,8 +256,27 @@ def managerDashboard():
 @app.route('/setMeal', methods=['POST'])
 @login_required
 def setMeal():
-    #TODO: Add the values to a table - for the students to fetch
-    return jsonify({'sCode': 200, 'success':True})
+    print("Hitting the API")
+    data = request.get_json()
+
+    dateString = data.get('date')
+    dateObject = datetime.strptime(dateString, '%Y-%m-%d').date()
+    baseMeal = data.get('base-meals')[0]
+    baseMealPrice = data.get('base-meal-price')[0]
+    extras = data.get('extras[]')
+    extrasPrices = data.get('prices[]')
+
+    existing_meal = Meals.query.filter_by(date=dateObject).first()
+    if existing_meal:
+        return jsonify({'sCode': 400, 'success':False, 'message': 'Meal already set for this date'}), 200
+    
+    meal = Meals(date=dateObject, base_meal=baseMeal, base_meal_price=baseMealPrice,
+             extras=extras, extras_prices=extrasPrices)
+    
+    db.session.add(meal)
+    db.session.commit()
+
+    return jsonify({'sCode': 200, 'success':True}), 200
 
 if __name__ == "__main__":
     app.run(debug=True)

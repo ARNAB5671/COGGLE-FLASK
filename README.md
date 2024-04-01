@@ -9,16 +9,20 @@ pip install -r requirements.txt
 
 ## Creating tables in Database
 
-1. Open your terminal or command prompt and navigate to the directory where you want to create the SQLite database file.
-2. Run the SQLite command-line interface: sqlite3 database.db
-3. Once you are in the SQLite prompt, you can define your tables using SQL commands.
-CREATE TABLE users (
-    id INTEGER PRIMARY KEY,
-    email VARCHAR(120) UNIQUE NOT NULL,
-    password_hash VARCHAR(128) NOT NULL,
-    role VARCHAR(50) NOT NULL
-);
-4. After defining your tables, you can exit the SQLite prompt by typing .exit
+1. Open your terminal or command prompt and navigate to the directory where the app.py file is there.
+2. Open the flask shell using the command `flask shell`.
+3. Type this inside the flask shell
+    ```
+    >>> from app import db
+    >>> db.create_all()
+    ```
+    This will reflect the table models that are there inside the app.py file
 
-Since you have already created the table in your SQLite database without defining a corresponding SQLAlchemy model, you can still interact with the table using Flask-SQLAlchemy's reflection feature. Reflection allows SQLAlchemy to automatically create SQLAlchemy models based on the existing database tables.
+4. Exit - `exit()`
 
+5. Now run the command `flask run` or `python app.py`
+
+Open the url `http://127.0.0.1:5000/` and enjoy.
+
+
+-- You can open the database.db file inside `instance/` using a good vscode extension. Like SQLite Viewer. To open the database.db with this, right click and select `Open With..`

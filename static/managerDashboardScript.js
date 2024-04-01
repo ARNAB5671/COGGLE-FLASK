@@ -22,12 +22,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('manager-form');
     form.addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent default form submission
-
+        
+        const today = new Date().toISOString().split('T')[0];
         // Serialize form data
         const formData = new FormData(form);
 
         // Convert form data to JSON object
-        const jsonData = {};
+        const jsonData = { date: today }; // Add today's date to the JSON object
         formData.forEach((value, key) => {
             if (!jsonData[key]) {
                 jsonData[key] = [];
@@ -57,7 +58,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 Array.from(form.elements).forEach(element => {
                     element.disabled = true;
                 });
+            } else {
+                // Alert the user with the message from the response
+                alert(data.message);
             }
+    
         })
         .catch(error => {
             console.error('Error:', error);

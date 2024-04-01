@@ -12,8 +12,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const finalAmountElement = document.getElementById('final-amount');
     finalAmountElement.textContent = baseMealAmount;
 
+    const today = new Date().toISOString().split('T')[0];
     // get the values of meals from the api
-    fetch('http://127.0.0.1:5000/todaysMealOptions') // Replace 'https://api.example.com/data' with the actual URL
+    fetch('http://127.0.0.1:5000/todaysMealOptions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ date: today }) // Pass today's date as an argument
+    })
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -22,6 +29,23 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(data => {
         console.log('Data:', data);
+
+        if (!data.success) {
+            document.getElementById('base-meals').textContent = 'Not available yet';
+            document.getElementById('base-meal-amount').textContent = 'Not available yet';
+            finalAmountElement.textContent = 'Not available yet';
+            const extrasListElement = document.getElementById('extra-meal-list');
+            extrasListElement.innerHTML = '<li>Not available yet</li>';
+            
+            const sendRequestBtn = document.getElementById('sendRequestBtn');
+            sendRequestBtn.disabled = true;
+            sendRequestBtn.style.backgroundColor = '#888';
+            sendRequestBtn.style.opacity = '0.5';
+            sendRequestBtn.style.pointerEvents = 'none';
+
+            return; // Exit early if success is false
+        }
+
         // Handle the data received from the API
         document.getElementById('base-meals').textContent = data.mealOptions.baseMeal;
         document.getElementById('base-meal-amount').textContent = 'Base: Rs ' + data.mealOptions.baseMealPrice + '/-';

@@ -123,3 +123,10 @@ h1 {
 #sendRequestBtn:hover {
     background-color: #0056b3; /* Darker blue color on hover */
 }
+
+.disabled-btn {
+    background-color: #ccc; /* Change background color */
+    color: #666; /* Change text color */
+    cursor: not-allowed; /* Change cursor */
+    /* Add any other styles you want for a disabled button */
+}
