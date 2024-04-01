@@ -56,6 +56,31 @@ class Meals(db.Model):
     def get_extras_prices(self):
         return json.loads(self.extras_prices)
 
+
+class StudentMealData(db.Model):
+    __tablename__ = 'student_meal_data'
+
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, nullable=False)
+    student_email = db.Column(db.String(255), nullable=False)
+    base_meal = db.Column(db.String(255))
+    base_meal_price = db.Column(db.Integer)
+    extras_prices = db.Column(db.Integer)
+    total = db.Column(db.Integer)
+
+    __table_args__ = (
+        db.UniqueConstraint('date', 'student_email', name='unique_date_student_email'),
+    )
+
+    def __init__(self, date, student_email, base_meal, base_meal_price, extras_prices, total):
+        self.date = date
+        self.student_email = student_email
+        self.base_meal = base_meal
+        self.base_meal_price = base_meal_price
+        self.extras_prices = extras_prices
+        self.total = total
+
+
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 @app.route('/test')
@@ -78,7 +103,7 @@ def redirectToLoggedInHomePage(current_user, defaultPage="home.html"):
     if current_user.is_authenticated:
         if current_user.role=="manager":
             return redirect(url_for('managerDashboard'))
-        return redirect(url_for('managerDashboard'))
+        return redirect(url_for('studentDashboard'))
     return render_template(defaultPage)
 
 @app.route("/")
@@ -112,7 +137,8 @@ def register():
         return jsonify({'sCode': 400, 'success': False, 'message': 'Passwords do not match'}), 400
     
     existingUserUsername = Users.query.filter_by(
-            email=email
+            email=email,
+            role=role
         ).first()
     if existingUserUsername:
         return jsonify({'sCode': 400, 'success': False, 'message': f'{role} already exists'}), 400
@@ -200,7 +226,6 @@ def studentDashboard():
 @app.route('/todaysMealOptions', methods=['POST'])
 @login_required
 def todaysMealOptions():
-    print("HERE")
     request_data = request.get_json()
     today = request_data.get('date')
 
@@ -213,10 +238,10 @@ def todaysMealOptions():
             'success': False,
             'message': 'meals not available'
         })
+    
     extrasList = list()
     for extra, price in zip(meal.get_extras(), meal.get_extras_prices()):
         extrasList.append({extra: price})
-    print("HERE")
     return jsonify({
         'sCode': 200,
         'success': True,
@@ -232,18 +257,48 @@ def todaysMealOptions():
 @login_required
 def studentSelectMeals():
     data = request.get_json()
+    dateString = data.get('date')
+    dateObject = datetime.strptime(dateString, '%Y-%m-%d').date()
     baseMeal = data.get('baseMeal')
     baseMealAmount = data.get('baseMealAmount')
     extraMealPrice = data.get('extraMealPrice')
     totalAmount = data.get('totalAmount')
-    date = data.get('date')
 
     print("values")
     print(baseMeal, baseMealAmount, extraMealPrice, totalAmount)
-    print(date)
+    print(dateObject)
+
+    studentMealEntry = StudentMealData(date=dateObject, student_email=current_user.email, base_meal=baseMeal, base_meal_price=int(baseMealAmount), extras_prices=int(extraMealPrice), total=int(baseMealAmount)+int(extraMealPrice))
+    
+    db.session.add(studentMealEntry)
+    db.session.commit()
 
     return jsonify({'sCode': 200, 'success': True, 'message': 'User added successfully'}), 200
 
+@app.route('/studentMealsTable')
+@login_required
+def studentMealsTable():
+    if current_user.role!='student':
+        return redirect(url_for('unauthorizedPage'))
+    return render_template("studentMealsTablePage.html")
+
+
+@app.route('/studentMealsData')
+def studentMealsData():
+    print("Hit the API")
+    meal_data = StudentMealData.query.filter_by(student_email=current_user.email).all()
+    data_list = []
+    for meal in meal_data:
+        formatted_date = meal.date.strftime('%Y-%m-%d')
+        data_list.append({
+            'date': formatted_date,
+            'student_email': meal.student_email,
+            'base_meal': meal.base_meal,
+            'base_meal_price': meal.base_meal_price,
+            'extras_prices': meal.extras_prices,
+            'total': meal.total
+        })
+    return jsonify({'mealData': data_list})
 
 
 @app.route('/managerDashboard', methods=['GET'])
@@ -256,7 +311,6 @@ def managerDashboard():
 @app.route('/setMeal', methods=['POST'])
 @login_required
 def setMeal():
-    print("Hitting the API")
     data = request.get_json()
 
     dateString = data.get('date')

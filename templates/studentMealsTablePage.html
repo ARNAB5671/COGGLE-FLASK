@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Meal Data</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Meal Data</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Student Email</th>
+                <th>Base Meal</th>
+                <th>Base Meal Price</th>
+                <th>Extras Prices</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="meal-data">
+            <!-- Table rows will be added dynamically -->
+        </tbody>
+    </table>
+    <script>
+        fetch('http://127.0.0.1:8000/studentMealsData')
+            .then(response => response.json())
+            .then(data => {
+                const mealData = data.mealData;
+                const tableBody = document.getElementById('meal-data');
+                mealData.forEach(meal => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${meal.date}</td>
+                        <td>${meal.student_email}</td>
+                        <td>${meal.base_meal}</td>
+                        <td>${meal.base_meal_price}</td>
+                        <td>${meal.extras_prices}</td>
+                        <td>${meal.total}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>
