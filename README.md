@@ -24,6 +24,13 @@ SQL database has been used `sqlite3`
 
 ### Creating tables in Database
 
+Note: If there are existing contents in the db, first clear them. In `flask shell`, run this, 
+
+```
+from your_app import db
+db.drop_all()
+```
+
 1. Open your terminal or command prompt and navigate to the directory where the app.py file is there.
 2. Open the flask shell using the command `flask shell`.
 3. Type this inside the flask shell
