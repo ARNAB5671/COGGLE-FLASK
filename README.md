@@ -84,7 +84,7 @@ Once logged in, it wil automatically go to the dashboard screen within 2 seconds
 
 `http://127.0.0.1:8000/studentDashboard`
 
-![screenshot](/resources/srudentDashboard.png?raw=true "Student Dashboard")
+![screenshot](/resources/studentDashboard.png?raw=true "Student Dashboard")
 
 ## Logging Out
 
