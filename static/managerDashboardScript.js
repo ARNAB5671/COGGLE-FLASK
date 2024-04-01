@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Send POST request with JSON data to the server
-        fetch('http://127.0.0.1:5000/setMeal', {
+        fetch('http://127.0.0.1:8000/setMeal', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

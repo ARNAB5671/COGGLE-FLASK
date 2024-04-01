@@ -11,7 +11,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
 
 function authenticateUser(username, password) {
     // Example API endpoint for authentication
-    var apiUrl = 'http://127.0.0.1:5000/authenticateStudent';
+    var apiUrl = 'http://127.0.0.1:8000/authenticateStudent';
 
     // Example POST request to authenticate user
     fetch(apiUrl, {

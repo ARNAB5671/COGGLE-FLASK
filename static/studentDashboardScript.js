@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const today = new Date().toISOString().split('T')[0];
     // get the values of meals from the api
-    fetch('http://127.0.0.1:5000/todaysMealOptions', {
+    fetch('http://127.0.0.1:8000/todaysMealOptions', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'totalAmount': updatedBaseMealAmount + totalAmount,
             'date': date
         };
-        fetch('http://127.0.0.1:5000/studentSelectMeals', {
+        fetch('http://127.0.0.1:8000/studentSelectMeals', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
