@@ -53,8 +53,7 @@ Using the app includes Registering as `Manager` and `Student`. Manager can use t
 
 `127.0.0.1:8000/`
 
-![screenshot](/resources/home.png?raw=true "Home Page")
-<!-- <img src="/resources/home.png" alt="screenshot" width="400" height="300"/> -->
+<img src="resources/home.png?raw=true" alt="Home Page" width="400">
 
 ## User Registration
 
@@ -62,7 +61,7 @@ Using the app includes Registering as `Manager` and `Student`. Manager can use t
 
 Once Registered, it wil automatically go to the home screen within 2 seconds.
 
-<!-- ![screenshot](/resources/userRegistration.png?raw=false "User Registration") -->
+<img src="resources/userRegistration.png?raw=true" alt="User Registration" width="400">
 
 ## Manager and Student Login
 
@@ -71,20 +70,21 @@ Student Login - `http://127.0.0.1:8000/studentLogin`
 
 Once logged in, it wil automatically go to the dashboard screen within 2 seconds.
 
-![screenshot](/resources/managerLogin.png?raw=false "Manager Page")
-![screenshot](/resources/studentLogin.png?raw=true "Student Page")
+<img src="resources/managerLogin.png?raw=true" alt="Manager Page" width="400">
+<img src="resources/studentLogin.png?raw=true" alt="Student Page" width="400">
 
 ## Manager Dashboard
 
 `http://127.0.0.1:8000/managerDashboard`
 
-![screenshot](/resources/managerDashboard.png?raw=true "Manager Dashboard")
+<img src="resources/managerDashboard.png?raw=true" alt="Manager Dashboard" width="400">
 
 ## Student Dashboard
 
 `http://127.0.0.1:8000/studentDashboard`
 
-![screenshot](/resources/studentDashboard.png?raw=true "Student Dashboard")
+<img src="resources/studentDashboard.png?raw=true" alt="Student Dashboard" width="400">
+
 
 ## Logging Out
 
